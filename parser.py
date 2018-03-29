@@ -41,6 +41,14 @@ The file follows the following format:
     bezier: adds a bezier curve to the edge matrix - takes 8 parameters (x0, y0, x1, y1, x2, y2, x3, y3)
         This curve is drawn between (x0, y0) and (x3, y3)
         (x1, y1) and (x2, y2) are the control points for the curve.
+	box: adds a rectangular prism (box) to the edge matrix - takes 6 parameters (x, y, z, width, height, depth)
+
+	sphere: adds a sphere to the edge matrix - takes 4 parameters (x, y, z, radius)
+
+	torus: adds a torus to the edge matrix - takes 5 parameters (x, y, z, radius1, radius2)
+
+		radius1 is the radius of the circle that makes up the torus
+		radius2 is the full radius of the torus (the translation factor). You can think of this as the distance from the center of the torus to the center of any circular slice of the torus.
 	 quit: end parsing
 
 See the file script for an example of the file format
