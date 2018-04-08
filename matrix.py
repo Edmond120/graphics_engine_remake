@@ -147,15 +147,30 @@ def make_box(matrix, x, y, z, width, height, depth):
 	draw.link_points(matrix,p2,p6)
 	draw.link_points(matrix,p3,p7)
 
-def make_sphere(matrix, x, y, z, radius, circles = 100, edges=200):
+def make_sphere(matrix, x, y, z, radius, circles = 150, edges=200):
 	#edges is the amount of edges in each circle
 	translate = make_translate( x, y, z )
-	for theta in xrange(0,math.radians(360),math.radians(360.0/circles)):
+	theta = 0
+	end = math.radians(360)
+	increment = math.radians(360.0 / circles)
+	while(theta < end):
 		circle = []
 		make_circle(circle,0,0,0,radius,edges=edges)
-		rotate = make_rotY( theta )
-		transform = matirx_mult(rotate,translate)
+		rotate = make_rotX( theta )
+		transform = matrix_mult(rotate,translate)
 		matrix.extend(matrix_mult(circle,transform))
+		theta += increment
 
-def make_torus(matrix, x, y, z, radius1, radius2):
-	pass
+def make_torus(matrix, x, y, z, radius1, radius2, circles = 150, edges = 200):
+	#edges is the amount of edges in each circle
+	translate = make_translate( x, y, z )
+	theta = 0
+	end = math.radians(360)
+	increment = math.radians(360.0 / circles)
+	while(theta < end):
+		circle = []
+		make_circle(circle,radius2 - radius1,0,0,radius1,edges=edges)
+		rotate = make_rotY( theta )
+		transform = matrix_mult(rotate,translate)
+		matrix.extend(matrix_mult(circle,transform))
+		theta += increment

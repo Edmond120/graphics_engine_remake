@@ -85,7 +85,7 @@ def _print_matrix(title,matrix):
 degrees_or_radians = 'radians'
 
 def parse_line( line, debug=False, verbose=0):
-	global edges, transform, screen, color, quit_flag
+	global edges, transform, screen, color, quit_flag, degrees_or_radians
 	if(line == '\n'):
 		return
 	try:
@@ -142,8 +142,8 @@ def parse_line( line, debug=False, verbose=0):
 			else:
 				no_error = True
 				if(degrees_or_radians == 'degrees'):
-					for i in xrange(1,len(args) - 1):
-						args[i] = math.radians(args[i])
+					for i in xrange(2,len(args) - 1):
+						args[i] = math.radians(float(args[i]))
 				if(args[1] == 'x'):
 					rotate_matrix = make_rotX(float(args[2]))
 				elif(args[1] == 'y'):
@@ -247,6 +247,15 @@ def parse_line( line, debug=False, verbose=0):
 			else:
 				make_sphere(edges,int(args[1]),int(args[2]),int(args[3]),\
 								  int(args[4]))
+				if(verbose > 0):
+					_print_matrix("edges",edges)
+				return
+		elif args[0] == 'torus':
+			if(len(args) <= 5):
+				print "not enough args"
+			else:
+				make_torus(edges,int(args[1]),int(args[2]),int(args[3]),\
+								 int(args[4]),int(args[5]))
 				if(verbose > 0):
 					_print_matrix("edges",edges)
 				return
