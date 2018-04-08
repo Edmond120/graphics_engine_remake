@@ -18,6 +18,9 @@ def draw_lines( matrix, screen, color ):
 def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
     add_point(matrix, x0, y0, z0)
     add_point(matrix, x1, y1, z1)
+
+def link_points( matrix, p0, p1 ):
+	add_edge(matrix, p0[0], p0[1], p0[2], p1[0], p1[1], p1[2])
     
 def add_point( matrix, x, y, z=0 ):
     matrix.append( [x, y, z, 1] )

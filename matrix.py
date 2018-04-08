@@ -124,3 +124,38 @@ def new_matrix(rows = 4, cols = 4):
         for c in xrange( cols ):
             m[r].append( 0 )
     return m
+
+def make_box(matrix, x, y, z, width, height, depth):
+	p0 = (x,y,z,)
+	p1 = (x + width, y ,z,)
+	p2 = (x + width, y + height, z,)
+	p3 = (x, y + height, z,)
+	p4 = (p0[0],p0[1],p0[2] + depth,)
+	p5 = (p1[0],p1[1],p1[2] + depth,)
+	p6 = (p2[0],p2[1],p2[2] + depth,)
+	p7 = (p3[0],p3[1],p3[2] + depth,)
+	draw.link_points(matrix,p0,p1)
+	draw.link_points(matrix,p1,p2)
+	draw.link_points(matrix,p2,p3)
+	draw.link_points(matrix,p3,p0)
+	draw.link_points(matrix,p4,p5)
+	draw.link_points(matrix,p5,p6)
+	draw.link_points(matrix,p6,p7)
+	draw.link_points(matrix,p7,p4)
+	draw.link_points(matrix,p0,p4)
+	draw.link_points(matrix,p1,p5)
+	draw.link_points(matrix,p2,p6)
+	draw.link_points(matrix,p3,p7)
+
+def make_sphere(matrix, x, y, z, radius, circles = 100, edges=200):
+	#edges is the amount of edges in each circle
+	translate = make_translate( x, y, z )
+	for theta in xrange(0,math.radians(360),math.radians(360.0/circles)):
+		circle = []
+		make_circle(circle,0,0,0,radius,edges=edges)
+		rotate = make_rotY( theta )
+		transform = matirx_mult(rotate,translate)
+		matrix.extend(matrix_mult(circle,transform))
+
+def make_torus(matrix, x, y, z, radius1, radius2):
+	pass
