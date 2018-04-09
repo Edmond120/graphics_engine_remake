@@ -25,8 +25,10 @@ def link_points( matrix, p0, p1 ):
 def add_point( matrix, x, y, z=0 ):
     matrix.append( [x, y, z, 1] )
     
-
-
+def draw_polygon(p0, p1, p2, screen, color):
+	draw_line( p0[0], p0[1], p1[0], p1[1], screen, color )
+	draw_line( p1[0], p1[1], p2[0], p2[1], screen, color )
+	draw_line( p2[0], p2[1], p0[0], p0[1], screen, color )
 
 def draw_line( x0, y0, x1, y1, screen, color ):
 
