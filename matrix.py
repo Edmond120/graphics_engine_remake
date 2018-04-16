@@ -67,7 +67,7 @@ class Matrix:
 		self.dimensions = (len(matrix),len(matrix[0]))
 		self.round_nums = round_nums
 
-	def _add(self, other, subtract=False):
+	def _add(self, other, operation):
 		if(not isinstance(other,Matrix)):
 			raise TypeError
 		if(len(self) != len(other)):
@@ -77,34 +77,37 @@ class Matrix:
 		for row in xrange( rows ):
 			m.append( [] )
 			for c in xrange( cols ):
-				if(subtract):
+				if(operation == 0):
 					m[r].append( self[row,col] + other[row,col] )
-				else:
-					m[r].append( self[row,col] + other[row,col] )
+				elif(operation == 1):
+					m[r].append( self[row,col] - other[row,col] )
 		return Matrix(m)
 
 	def __len__(self):
 		return len(self.matrix)
 
 	def __add__(self, other):
-		return _add(self,other)
+		return self._add(other,0)
 
 	def __sub__(self, other):
-		return _add(self,other,subtract=True)
+		return self._add(other,1)
 
 	def __mul__(self, other):
-		if(len(self[0]) == len(other)):
-			rows = len(self)
-			cols = len(other[0])
-			m = new_matrix(rows,cols)
-			for row in xrange(rows):
-				otherc = xrange(cols)
-				for i in xrange(len(self[0])):
-					for col in otherc:
-						m[row,col] += self[row,i] * other[i,col]
-			return m
+		if(isinstance(other,Matrix)):
+			if(len(self[0]) == len(other)):
+				rows = len(self)
+				cols = len(other[0])
+				m = new_matrix(rows,cols)
+				for row in xrange(rows):
+					otherc = xrange(cols)
+					for i in xrange(len(self[0])):
+						for col in otherc:
+							m[row,col] += self[row,i] * other[i,col]
+				return m
+			else:
+				return None
 		else:
-			return None
+			raise TypeError
 
 	def __str__(self):
 		rows,cols = self.dimensions
