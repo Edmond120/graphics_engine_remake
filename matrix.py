@@ -142,13 +142,16 @@ class Matrix:
 	def append(self, item):
 		if(isinstance(item,list)):
 			self.matrix.append(item)
+			self.dimensions[0] += 1
 		else:
 			raise TypeError
 
 	def extend(self, item):
 		if(isinstance(item, matrix)):
 			self.matrix.extend(item.matrix)
+			self.dimensions[0] += len(item.matrix)
 		elif isinstance(item, list):
 			self.matrix.extend(item)
+			self.dimensions[0] += len(item)
 		else:
 			raise TypeError

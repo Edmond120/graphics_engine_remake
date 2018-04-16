@@ -5,7 +5,7 @@ from matrix import *
 class Function():
 	"""
 	remember to implement function(self,x)
-	setting them to None counts as infinite
+	setting them to None counts as infinity or negative infinity
 	when slicing functions, it is [inclusive,inclusive]
 	"""
 	def __init__(self):
@@ -21,7 +21,10 @@ class Function():
 		pass
 
 	def bound_check(self,num):
-		if not (num >= self.lower_bound and num <= self.upper_bound):
+		if not ((self.lower_bound == None or num >= self.lower_bound)\
+				and\
+				(self.upper_bound == None or num <= self.upper_bound)\
+				):
 			raise IndexError
 
 	def __getitem__(self,sliced):
@@ -43,10 +46,13 @@ class Function():
 			product = start * stop * step
 			if(isinstance(product, float) or isinstance(product, int)):
 				def generator(start,stop,step):
-					i = start
-					while(i <= stop):
-						yield self.function(i)
-						i += step
+					values = int(stop - start / step)
+					if values < 0:
+						raise IndexError
+					i = 0
+					while(i <= values):
+						yield self.function(i * step + start)
+						i += 1
 				return generator(start,stop,step)
 			else:
 				raise TypeError
@@ -84,3 +90,19 @@ class Hermite_curve(Function):
 
 	def function(self,t):
 		return (Matrix([[t**3,t**2,t,1]]) * self.constants)[0]
+
+class Bezier_curve(Function):
+	"""takes a value between 0 and 1 and returns a point"""
+
+	def __init__(self, x0, y0, x1, y1, x2, y2, x3, y3):
+		self.constants = Matrix([x0, x1, x2, x3],\
+								[y0, y1, y2, y3])
+
+	def function(self,t):
+		abcd = Matrix([\
+						[ (1 - t) ** 3         ],\
+						[ 3 * (1 - t) ** 2 * t ],\
+						[ 3 * (1 - t) * t ** 2 ],\
+						[ t ** 3               ],\
+					  ])
+		return (self.constants * abcd)[0]
