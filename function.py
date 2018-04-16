@@ -1,24 +1,33 @@
 import math
-from abc import ABC, abstractmethod
 
-from matrix import Matrix
+from matrix import *
 
 class Function():
+	"""
+	remember to implement function(self,x)
+	setting them to None counts as infinite
+	when slicing functions, it is [inclusive,inclusive]
+	"""
 	def __init__(self):
-		pass
+		self.upper_bound = None
+		self.lower_bound = None
 
 	def __len__(self):
 		return 0
 
-	@abstractmethod
+	#abstractmethod
 	def function(self,x):
 		"""returns f(x)"""
+		pass
+
+	def bound_check(self,num):
+		if not (num >= self.lower_bound and num <= self.upper_bound):
+			raise IndexError
 
 	def __getitem__(self,sliced):
 		"""
 		returns function output or a generator
-		if only ints are used for slicing then it is [inclusive,excluisive]
-		if any floats are used for slicing then it is [inclusive,inclusive]
+		when slicing functions it is [inclusive,inclusive]
 		"""
 		if(isinstance(sliced,slice)):
 			if(sliced.stop == None):
@@ -29,19 +38,16 @@ class Function():
 				step = 1
 			else:
 				step = sliced.step
+			self.bound_check(start)
+			self.bound_check(stop)
 			product = start * stop * step
-			if(isinstance(product, float)):
-				i = start
-				while(i <= stop):
-					yield self.function(i)
-					i += step
-				return
-			elif(isinstance(product, int)):
-				i = start
-				while(i < stop):
-					yield self.function(i)
-					i += step
-				return
+			if(isinstance(product, float) or isinstance(product, int)):
+				def generator(start,stop,step):
+					i = start
+					while(i <= stop):
+						yield self.function(i)
+						i += step
+				return generator(start,stop,step)
 			else:
 				raise TypeError
 		elif(isinstance(sliced,tuple)):
@@ -50,6 +56,7 @@ class Function():
 				l.append(self[value])
 			return l
 		elif(isinstance(sliced,float) or isinstance(sliced,int)):
+			self.bound_check(sliced)
 			return self.function(sliced)
 		else:
 			raise TypeError
@@ -64,7 +71,9 @@ class Hermite_curve(Function):
 					   [ 1, 0, 0, 0],
 					])
 
-	def __init__(self, x0, y0, x1, y1, rx0, ry0, rx1, ry1, z=0):
+	def __init__(self, x0, y0, x1, y1, rx0, ry0, rx1, ry1):
+		self.lower_bound = 0
+		self.upper_bound = 1
 		args = Matrix([\
 						[ x0, y0],
 						[ x1, y1],

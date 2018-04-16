@@ -1,7 +1,5 @@
 import math
 
-from function import *
-
 def make_translate( x, y, z ):
 	m = ident(4)
 	m[3][0] = x
@@ -65,7 +63,7 @@ def new_matrix(rows = 4, cols = 4):
 
 class Matrix:
 	def __init__(self, matrix, round_nums = False):
-		self.matrx = matrix
+		self.matrix = matrix
 		self.dimensions = (len(matrix),len(matrix[0]))
 		self.round_nums = round_nums
 
@@ -115,7 +113,7 @@ class Matrix:
 			string += '['
 			for col in xrange(cols):
 				if(self.round_nums):
-					s = str(round(self[row,col]))
+					s = str(int(round(self[row,col])))
 				else:
 					s = str(self[row,col])
 				string += ' ' * (3 - len(s)) + s + ' '
@@ -131,7 +129,12 @@ class Matrix:
 			raise TypeError
 
 	def __setitem__(self,key,item):
-		self[key] = item
+		if(isinstance(key,tuple)):
+			self.matrix[key[0]][key[1]] = item
+		elif(isinstance(key,int)):
+			self.matrix[key] = item
+		else:
+			raise TypeError
 
 	def append(self, item):
 		if(isinstance(item,list)):
