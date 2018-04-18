@@ -155,3 +155,11 @@ class Matrix:
 			self.dimensions[0] += len(item)
 		else:
 			raise TypeError
+
+	def copy(self):
+		m = []
+		for r in xrange( self.dimension[0] ):
+			m.append( [] )
+			for c in xrange( self.dimension[1] ):
+				m[r].append( self[r,c] )
+		return Matrix(m)
