@@ -29,6 +29,15 @@ class Function():
 				):
 			raise IndexError
 
+	def generator(start,stop,step):
+		values = int(stop - start / step)
+		if values < 0:
+			raise IndexError
+		i = 0
+		while(i <= values):
+			yield self.function(i * step + start)
+			i += 1
+
 	def __getitem__(self,sliced):
 		"""
 		returns function output or a generator
@@ -47,15 +56,7 @@ class Function():
 			self.bound_check(stop)
 			product = start * stop * step
 			if(isinstance(product, float) or isinstance(product, int)):
-				def generator(start,stop,step):
-					values = int(stop - start / step)
-					if values < 0:
-						raise IndexError
-					i = 0
-					while(i <= values):
-						yield self.function(i * step + start)
-						i += 1
-				return generator(start,stop,step)
+				return self.generator(start,stop,step)
 			else:
 				raise TypeError
 		elif(isinstance(sliced,tuple)):
@@ -120,17 +121,21 @@ class Circle(Function):
 	"""
 
 	scale = 1.0/(math.pi * 2)
+	half = (scale * 2) ** -1
 
-	def __init__(self, cx, cy, cz, r):
+	def __init__(self, cx, cy, cz, r, scale=None):
 		p1 = cy + r
 		p2 = cy - r
 		t = r * 4
 		self.hermite_0_pi   = Hermite(cx,p1,cx,p2,t,0,-t,0)
 		self.hermite_pi_2pi = Hermite(cx,p2,cx,p1,-t,0,t,0)
+		if(scale != None):
+			self.scale = scale
+			self.half = (scale * 2) ** -1
 
 	def function(self,theta):
-		angle = theta % (math.pi * 2)
-		if(angle < math.pi):
-			return self.hermite_0_pi[angle * Circle.scale]
+		angle = theta % (self.half * 2)
+		if(angle < self.half):
+			return self.hermite_0_pi[angle * self.scale * 2]
 		else:
-			return self.hermite_pi_2pi[(angle - math.pi) * Circle.scale]
+			return self.hermite_pi_2pi[(angle - self.half) * self.scale * 2]
