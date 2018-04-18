@@ -50,7 +50,7 @@ def ident( r ):
 	return m
 
 def matrix_mult( m1, m2 ):
-	"""for backwards compatibility"""
+	"for backwards compatibility"
 	return m1 * m2
 
 def new_matrix(rows = 4, cols = 4):

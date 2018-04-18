@@ -20,3 +20,13 @@ def make_torus(x, y, z, radius1, radius2, circles=150, polygons=100, edge=100):
 		point.append(0)
 		point.append(1)
 
+class Torus(Matrix):
+	def __init__(self, x, y, z, radius1, radius2, \
+				 circles=150, polygons=100, edge=100, round_nums=False):
+		self.matrix = make_torus(x,y,z,radius1,radius2,circles,polygons,edge)
+		self.round_nums=False
+		self.x=x
+		self.y=y
+		self.z=z
+		self.radius1=radius1
+		self.radius2=radius2
