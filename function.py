@@ -4,8 +4,7 @@ from matrix import *
 
 class Function():
 	"""
-	remember to implement function(self,x)
-	setting them to None counts as infinity or negative infinity
+	setting bounds to None counts as infinity or negative infinity
 	when slicing functions, it is [inclusive,inclusive]
 	"""
 
@@ -19,7 +18,7 @@ class Function():
 
 	#abstractmethod
 	def function(self,x):
-		"""returns f(x)"""
+		"returns f(x)"
 		pass
 
 	def bound_check(self,num):
@@ -71,7 +70,7 @@ class Function():
 			raise TypeError
 
 class Hermite(Function):
-	"""takes a value between 0 and 1 and returns a point"""
+	"takes a value between 0 and 1 and returns a point"
 
 	matrix = Matrix([\
 					   [ 2,-2, 1, 1],
@@ -96,7 +95,7 @@ class Hermite(Function):
 		return (Matrix([[t**3,t**2,t,1]]) * self.constants)[0]
 
 class Bezier(Function):
-	"""takes a value between 0 and 1 and returns a point"""
+	"takes a value between 0 and 1 and returns a point"
 
 	lower_bound = 0
 	upper_bound = 1

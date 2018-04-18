@@ -64,7 +64,6 @@ def new_matrix(rows = 4, cols = 4):
 class Matrix:
 	def __init__(self, matrix, round_nums = False):
 		self.matrix = matrix
-		self.dimensions = (len(matrix),len(matrix[0]))
 		self.round_nums = round_nums
 
 	def _add(self, other, operation):
@@ -110,7 +109,7 @@ class Matrix:
 			raise TypeError
 
 	def __str__(self):
-		rows,cols = self.dimensions
+		rows,cols = len(self), len(self[0])
 		string = ''
 		for row in xrange(rows):
 			string += '['
@@ -142,24 +141,21 @@ class Matrix:
 	def append(self, item):
 		if(isinstance(item,list)):
 			self.matrix.append(item)
-			self.dimensions[0] += 1
 		else:
 			raise TypeError
 
 	def extend(self, item):
 		if(isinstance(item, matrix)):
 			self.matrix.extend(item.matrix)
-			self.dimensions[0] += len(item.matrix)
 		elif isinstance(item, list):
 			self.matrix.extend(item)
-			self.dimensions[0] += len(item)
 		else:
 			raise TypeError
 
 	def copy(self):
 		m = []
-		for r in xrange( self.dimension[0] ):
+		for r in xrange( len(self) ):
 			m.append( [] )
-			for c in xrange( self.dimension[1] ):
+			for c in xrange( len(self[0]) ):
 				m[r].append( self[r,c] )
 		return Matrix(m)
