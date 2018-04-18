@@ -8,9 +8,11 @@ class Function():
 	setting them to None counts as infinity or negative infinity
 	when slicing functions, it is [inclusive,inclusive]
 	"""
+
+	upper_bound = None
+	lower_bound = None
 	def __init__(self):
-		self.upper_bound = None
-		self.lower_bound = None
+		pass
 
 	def __len__(self):
 		return 0
@@ -67,7 +69,7 @@ class Function():
 		else:
 			raise TypeError
 
-class Hermite_curve(Function):
+class Hermite(Function):
 	"""takes a value between 0 and 1 and returns a point"""
 
 	matrix = Matrix([\
@@ -77,22 +79,26 @@ class Hermite_curve(Function):
 					   [ 1, 0, 0, 0],
 					])
 
+	lower_bound = 0
+	upper_bound = 1
+
 	def __init__(self, x0, y0, x1, y1, rx0, ry0, rx1, ry1):
-		self.lower_bound = 0
-		self.upper_bound = 1
 		args = Matrix([\
 						[ x0, y0],
 						[ x1, y1],
 						[rx0,ry0],
 						[rx1,ry1],
 					  ])
-		self.constants = Hermite_curve.matrix * args
+		self.constants = Hermite.matrix * args
 
 	def function(self,t):
 		return (Matrix([[t**3,t**2,t,1]]) * self.constants)[0]
 
-class Bezier_curve(Function):
+class Bezier(Function):
 	"""takes a value between 0 and 1 and returns a point"""
+
+	lower_bound = 0
+	upper_bound = 1
 
 	def __init__(self, x0, y0, x1, y1, x2, y2, x3, y3):
 		self.constants = Matrix([x0, x1, x2, x3],\
@@ -106,3 +112,25 @@ class Bezier_curve(Function):
 						[ t ** 3               ],\
 					  ])
 		return (self.constants * abcd)[0]
+
+class Circle(Function):
+	"""
+	takes an angle in radians and returns the point of the circle
+	at that angle
+	"""
+
+	scale = 1.0/(math.pi * 2)
+
+	def __init__(self, cx, cy, cz, r):
+		p1 = cy + r
+		p2 = cy - r
+		t = r * 4
+		self.hermite_0_pi   = Hermite(cx,p1,cx,p2,t,0,-t,0)
+		self.hermite_pi_2pi = Hermite(cx,p2,cx,p1,-t,0,t,0)
+
+	def function(self,theta):
+		angle = theta % (math.pi * 2)
+		if(angle < math.pi):
+			return self.hermite_0_pi[angle * Circle.scale]
+		else:
+			return self.hermite_pi_2pi[(angle - math.pi) * Circle.scale]
