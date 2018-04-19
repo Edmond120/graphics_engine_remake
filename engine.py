@@ -13,8 +13,6 @@ class Stack():
 
 	def push(self,matrix):
 		self.stack.append(self.stack[-1] * matrix)
-		if(len(self.shapes) < len(self.stack)):
-			self.shapes.append( [] )
 		return self
 
 	def pop(self,index=-1):
