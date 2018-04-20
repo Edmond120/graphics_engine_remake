@@ -24,6 +24,7 @@ def make_torus(x, y, z, radius1, radius2, circles=150,edge=100):
 	theta = (math.pi * 2) / circles
 
 	polygons = Matrix([])
+	rotY - make_rotY(circles)
 	for i in xrange(circles):
 		pass
 
