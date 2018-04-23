@@ -28,8 +28,8 @@ class Function():
 				):
 			raise IndexError
 
-	def generator(start,stop,step):
-		values = int(stop - start / step)
+	def generator(self,start,stop,step):
+		values = int(float(stop) - float(start) / float(step))
 		if values < 0:
 			raise IndexError
 		i = 0
@@ -130,7 +130,7 @@ class Circle(Function):
 		self.hermite_pi_2pi = Hermite(cx,p2,cx,p1,-t,0,t,0)
 		if(scale != None):
 			self.scale = scale
-			self.half = (scale * 2) ** -1
+			self.half = 1/(scale * 2)
 
 	def function(self,theta):
 		angle = theta % (self.half * 2)

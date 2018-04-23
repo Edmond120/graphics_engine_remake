@@ -3,7 +3,7 @@ import math
 from matrix import *
 from function import *
 
-def make_torus(x, y, z, radius1, radius2, circles=150,edge=100):
+def make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 	"""
 	returns a torus matrix.
 
@@ -13,7 +13,7 @@ def make_torus(x, y, z, radius1, radius2, circles=150,edge=100):
 
 	points = edges * 2
 	translate = make_translate( x, y, z )
-	circle_function = Circle(radius2 - radius1,0,0,radius1,scale=1/points)
+	circle_function = Circle(radius2 - radius1,0,0,radius1,scale=1.0/points)
 	circle = Matrix( list(circle_function[0:points:1/points]) )
 
 	#format points cuz the matrix only has x and y
@@ -30,14 +30,15 @@ def make_torus(x, y, z, radius1, radius2, circles=150,edge=100):
 		p = 0;
 		end = len(circle)
 		while(p + 1 < end):
-			polygons.extend([circle[0],circle[1],next_circle[0]])
-			polygons.extend([next_circle[0],circle[1],next_circle[1])
-		
+			polygons.extend([circle[p],circle[p + 1],next_circle[p]])
+			polygons.extend([next_circle[p],circle[p + 1],next_circle[p + 1]])
+			p += 2
+	return polygons
 
 class Torus(Matrix):
 	def __init__(self, x, y, z, radius1, radius2, \
-				 circles=150, polygons=100, edge=100, round_nums=False):
-		self.matrix = make_torus(x,y,z,radius1,radius2,circles,polygons,edge)
+				 circles=150, edges=100, round_nums=False):
+		self.matrix = make_torus(x,y,z,radius1,radius2,circles,edges)
 		self.round_nums=False
 		self.x=x
 		self.y=y
