@@ -143,14 +143,16 @@ class Matrix:
 			self.matrix.append(item)
 		else:
 			raise TypeError
+		return self
 
 	def extend(self, item):
-		if(isinstance(item, matrix)):
+		if(isinstance(item, Matrix)):
 			self.matrix.extend(item.matrix)
 		elif isinstance(item, list):
 			self.matrix.extend(item)
 		else:
 			raise TypeError
+		return self
 
 	def copy(self):
 		m = []
@@ -159,3 +161,19 @@ class Matrix:
 			for c in xrange( len(self[0]) ):
 				m[r].append( self[r,c] )
 		return Matrix(m)
+
+	def apply_modification(self, function):
+		r = 0
+		while r < len(self):
+			c = 0
+			while c < len(self[r]):
+				self[r,c] = function(self[r,c])
+				c += 1
+			r += 1
+		return self
+
+	def apply_function(self, function):
+		for row in self.matrix:
+			for item in row:
+				function(item)
+		return self

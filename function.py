@@ -29,7 +29,7 @@ class Function():
 			raise IndexError
 
 	def generator(self,start,stop,step):
-		values = int(float(stop) - float(start) / float(step))
+		values = int((float(stop) - float(start)) / float(step))
 		if values < 0:
 			raise IndexError
 		i = 0

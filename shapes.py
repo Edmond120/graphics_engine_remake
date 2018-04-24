@@ -14,7 +14,7 @@ def make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 	points = edges * 2
 	translate = make_translate( x, y, z )
 	circle_function = Circle(radius2 - radius1,0,0,radius1,scale=1.0/points)
-	circle = Matrix( list(circle_function[0:points:1/points]) )
+	circle = Matrix( list(circle_function[0:points:1.0/points]) )
 
 	#format points cuz the matrix only has x and y
 	for point in circle:
