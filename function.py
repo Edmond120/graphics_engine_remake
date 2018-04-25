@@ -129,8 +129,8 @@ class Circle(Function):
 		self.hermite_0_pi   = Hermite(cx,p1,cx,p2,t,0,-t,0)
 		self.hermite_pi_2pi = Hermite(cx,p2,cx,p1,-t,0,t,0)
 		if(scale != None):
-			self.scale = scale
-			self.half = 1/(scale * 2)
+			self.scale = float(scale)
+			self.half = float(1/(scale * 2))
 
 	def function(self,theta):
 		angle = theta % (self.half * 2)
