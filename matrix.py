@@ -171,9 +171,3 @@ class Matrix:
 				c += 1
 			r += 1
 		return self
-
-	def apply_function(self, function):
-		for row in self.matrix:
-			for item in row:
-				function(item)
-		return self
