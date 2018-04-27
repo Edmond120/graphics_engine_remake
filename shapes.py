@@ -11,7 +11,7 @@ def make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 	amount of polygons drawn is equal to the edges * 2 * circles
 	"""
 
-	points = edges * 2
+	points = edges
 	translate = make_translate( x, y, z )
 	circle_function = Circle(radius2 - radius1,0,0,radius1,scale=1.0/points)
 	circle = Matrix( list(circle_function[0:points:1]) )

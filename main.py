@@ -7,7 +7,8 @@ from display import *
 from matrix import *
 
 screen = new_screen()
-torus = Torus(250,250,0,100,250,circles=10,edges=20)
+torus = Torus(0,0,0,100,250,circles=10,edges=10)
+torus = torus * make_rotX(math.radians(90)) * make_translate(250,250,0)
 torus.apply_modification(int)
 i = 0
 color = [255,0,0]
