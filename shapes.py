@@ -3,7 +3,11 @@ import math
 from matrix import *
 from function import *
 
-def Torus(x, y, z, radius1, radius2, circles=150,edges=100):
+class Torus(Matrix):
+	def __init__(self,x, y, z, radius1, radius2, circles=150,edges=100):
+		Matrix.__init__(self,make_torus(x,y,z,radius1,radius2,circles,edges))
+
+def make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 	"""
 	returns a torus matrix.
 
@@ -35,3 +39,5 @@ def Torus(x, y, z, radius1, radius2, circles=150,edges=100):
 			p += 1
 		circle = next_circle
 	return polygons * translate
+
+

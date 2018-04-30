@@ -21,7 +21,15 @@ class Stack():
 		return self.stack.pop(index)
 
 	def add_shape(self,shape):
-		self.shape.append( [self.stack[-1] * shape] )
+		self.shapes.append( self.stack[-1] * shape )
+		return self
+
+	def clear_stack(self):
+		self.stack = [ident(4)]
+		return self
+
+	def clear_shapes(self):
+		self.shapes = []
 		return self
 
 class Screen():
@@ -31,14 +39,26 @@ class Screen():
 	used to include things like zbuffer
 	"""
 
-	XRES = 500
-	YRES = 500
-	MAX_COLOR = 255
-	RED = 0
-	GREEN = 1
-	BLUE = 2
+	def __init__(self, width=XRES, height=YRES):
+		self.screen = new_screen(width,height)
 
-	DEFAULT_COLOR = [0, 0, 0]
+	def clear_screen(self):
+		clear_screen(self.screen)
 
-	def __init__(self):
-		pass
+	def save_ppm(self,fname):
+		save_ppm(self.screen,fname)
+
+	def save_extension(self,fname):
+		save_extension(self.screen,fname)
+
+	def display(self):
+		display(self.screen)
+
+	def draw_line( x0, y0, x1, y1, color):
+		draw_line( x0, y0, x1, y1, self.screen, color )
+
+	def draw_lines( matrix, color):
+		draw_lines( matrix, self.screen, color)
+
+	def draw_polygon(p0, p1, p2, color):
+		draw_polygon(p0, p1, p2, self.screen, color)
