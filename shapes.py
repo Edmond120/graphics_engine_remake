@@ -7,12 +7,12 @@ class Torus(Matrix):
 	def __init__(self,x, y, z, radius1, radius2, circles=150,edges=100):
 		Matrix.__init__(self,make_torus(x,y,z,radius1,radius2,circles,edges))
 
-def make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
+def _make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 	"""
 	returns a torus matrix.
 
 	edges are counted as edges per circle.
-	amount of polygons drawn is equal to the edges * 2 * circles
+	amount of polygons drawn is equal to edges * 2 * circles
 	"""
 
 	points = edges
@@ -40,4 +40,18 @@ def make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 		circle = next_circle
 	return polygons * translate
 
+class Sphere(Matrix):
+	def __init__(self, x, y, z, radius, circles=150, edges=100):
+		Matrix.__init__(self,make_sphere(x,y,z,radius,circles,edges))
 
+def _make_sphere(x, y, z, radius, circles=150, edges=100):
+	"""
+	returns a sphere matrix.
+
+	edges are counted as edges per circle.
+	amount of polygons drawn is equal to edges * 2 * (circles + 2)
+	#unlike the torus the sphere has two poles
+	"""
+
+	points = edges
+	translate = make_translate( x, y, z )

@@ -63,8 +63,12 @@ def new_matrix(rows = 4, cols = 4):
 
 class Matrix:
 	def __init__(self, matrix, round_nums = False):
-		self.matrix = matrix
-		self.round_nums = round_nums
+		if(isinstance(matrix,Matrix)):
+			self.matrix     = matrix.matrix
+			self.round_nums = matrix.round_nums
+		else:
+			self.matrix = matrix
+			self.round_nums = round_nums
 
 	def _add(self, other, operation):
 		if(not isinstance(other,Matrix)):
