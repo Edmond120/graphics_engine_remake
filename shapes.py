@@ -3,9 +3,20 @@ import math
 from matrix import *
 from function import *
 
+def link_circle_matrix(polygons,circle,next_circle):
+	"""
+	draws polygons between two circles matrices with the same number of points
+	"""
+	p = 0;
+	end = len(circle)
+	while(p + 1 < end):
+		polygons.extend([circle[p],circle[p + 1],next_circle[p]])
+		polygons.extend([next_circle[p],circle[p + 1],next_circle[p + 1]])
+		p += 1
+
 class Torus(Matrix):
 	def __init__(self,x, y, z, radius1, radius2, circles=150,edges=100):
-		Matrix.__init__(self,make_torus(x,y,z,radius1,radius2,circles,edges))
+		Matrix.__init__(self,_make_torus(x,y,z,radius1,radius2,circles,edges))
 
 def _make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 	"""
@@ -31,18 +42,13 @@ def _make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 	rotY = make_rotY(theta)
 	for i in xrange(circles):
 		next_circle = circle * rotY
-		p = 0;
-		end = len(circle)
-		while(p + 1 < end):
-			polygons.extend([circle[p],circle[p + 1],next_circle[p]])
-			polygons.extend([next_circle[p],circle[p + 1],next_circle[p + 1]])
-			p += 1
+		link_circle_matrix(polygons,circle,next_circle)
 		circle = next_circle
 	return polygons * translate
 
 class Sphere(Matrix):
 	def __init__(self, x, y, z, radius, circles=150, edges=100):
-		Matrix.__init__(self,make_sphere(x,y,z,radius,circles,edges))
+		Matrix.__init__(self,_make_sphere(x,y,z,radius,circles,edges))
 
 def _make_sphere(x, y, z, radius, circles=150, edges=100):
 	"""
@@ -55,3 +61,28 @@ def _make_sphere(x, y, z, radius, circles=150, edges=100):
 
 	points = edges
 	translate = make_translate( x, y, z )
+	hermite = Hermite(0,radius,0,-radius,4 * radius,0,-4 * radius,0)
+
+	start_point = Constant(Matrix([0,radius]))
+	polygons = Matrix([])
+	current_circle = start_point
+	circle_height = radius
+	circle_height_change = (2 * radius) / circles
+	if circles % 2 != 0:
+		odd = 1
+	else:
+		odd = 0
+	for i in xrange(circles/2 + odd):
+		circle_height += circle_height_change
+		next_radius = hermite[1 - circle_height/radius][0]
+		next_circle = Circle(0,circle_height,0,next_radius,scale=1.0/points)
+		#todo draw polygons
+		current_circle = next_circle
+	for i in xrange(circles/2):
+		circle_height -= circle_height_change
+		next_radius = hermite[circle_height/radius][0]
+		next_circle = Circle(0,circle_height,next_radius,scale=1.0/points)
+		#todo draw polygons
+		current_circle = next_circle
+	end_point = Constant(Matrix[0,-radius])
+	#todo draw polygons

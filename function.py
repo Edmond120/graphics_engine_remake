@@ -138,3 +138,50 @@ class Circle(Function):
 			return self.hermite_0_pi[angle * self.scale * 2]
 		else:
 			return self.hermite_pi_2pi[(angle - self.half) * self.scale * 2]
+
+class Linear(Function):
+	"""
+	a linear graph function
+	"""
+
+	lower_bound = None
+	upper_bound = None
+
+	def __init__(self, slope, y_intercept):
+		self.slope = slope
+		self.y_intercept = y_intercept
+
+	def function(self,x):
+		return (x * self.slope) + self.y_intercept
+
+class Function_Group(Function):
+	"""
+	returns a list of the results from the given functions
+	"""
+
+	def __init__(self,*functions):
+		self.functions = functions
+		for function in functions:
+			if(function.lower_bound != None):
+				if(self.lower_bound == None or self.lower_bound > function.lower_bound):
+					self.lower_bound = function.lower_bound
+			if(function.upper_bound != None):
+				if(self.upper_bound == None or self.upper_bound > function.upper_bound):
+					self.upper_bound = function.upper_bound
+
+	def function(self,x):
+		results = []
+		for function in functions:
+			results.append(function[x])
+		return results
+
+class Constant(Function):
+	"""
+	always returns the initialization value
+	"""
+
+	def __init__(self,value):
+		self.value = value
+
+	def function(self,x=0):
+		return self.value
