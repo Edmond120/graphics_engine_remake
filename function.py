@@ -22,11 +22,11 @@ class Function():
 		pass
 
 	def bound_check(self,num):
-		if not ((self.lower_bound == None or num >= self.lower_bound)\
-				and\
-				(self.upper_bound == None or num <= self.upper_bound)\
-				):
-			raise IndexError
+		if not (self.lower_bound == None or num >= self.lower_bound):
+			return self.lower_bound
+		if not (self.upper_bound == None or num <= self.upper_bound):
+			return self.upper_bound
+		return num
 
 	def generator(self,start,stop,step):
 		values = int((float(stop) - float(start)) / float(step))
@@ -51,8 +51,8 @@ class Function():
 				step = 1
 			else:
 				step = sliced.step
-			self.bound_check(start)
-			self.bound_check(stop)
+			start = self.bound_check(start)
+			stop = self.bound_check(stop)
 			product = start * stop * step
 			if(isinstance(product, float) or isinstance(product, int)):
 				return self.generator(start,stop,step)

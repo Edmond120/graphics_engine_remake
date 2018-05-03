@@ -14,31 +14,19 @@ def link_circle_matrices(polygons,circle,next_circle):
 		polygons.extend([next_circle[p],circle[p + 1],next_circle[p + 1]])
 		p += 1
 
-def link_circles(circle1,circle2,points):
+def link_circles(polygons,circle1,circle2,points):
 	"""
 	like link_circle_matrices but it calculates the points of the circles
 	as it runs
 	
 	circle1 and circle2 are of the class Function
 	"""
-	if(isinstance(circle1,Circle)):
-		circle1_scale = circle1.scale
-		circle1.set_scale(1.0/points)
-	if(isinstance(circle2,Circle)):
-		circle2_scale = circle2.scale
-		circle2.set_scale(circle1.scale)
-
 	p = 0
 	end = points
 	while(p + 1 < end):
 		polygons.extend([circle1[p],circle1[p + 1],circle2[p]])
 		polygons.extend([circle2[p],circle1[p + 1],circle2[p + 1]])
 		p += 1
-
-	if(isinstance(circle1,Circle)):
-		circle1.set_scale(circle1_scale)
-	if(isinstance(circle2,Circle)):
-		circle2.set_scale(circle2_scale)
 
 class Torus(Matrix):
 	def __init__(self,x, y, z, radius1, radius2, circles=150,edges=100):
@@ -85,6 +73,7 @@ def _make_sphere(x, y, z, radius, circles=150, edges=100):
 	#unlike the torus the sphere has two poles
 	"""
 
+	radius = float(radius)
 	points = edges
 	translate = make_translate( x, y, z )
 	hermite = Hermite(0,radius,0,-radius,4 * radius,0,-4 * radius,0)
@@ -94,21 +83,18 @@ def _make_sphere(x, y, z, radius, circles=150, edges=100):
 	current_circle = start_point
 	circle_height = radius
 	circle_height_change = (2 * radius) / circles
-	if circles % 2 != 0:
-		odd = 1
-	else:
-		odd = 0
-	for i in xrange(circles/2 + odd):
-		circle_height += circle_height_change
+	for i in xrange(circles/2 + circles % 2):
+		circle_height -= circle_height_change
 		next_radius = hermite[1 - circle_height/radius][0]
-		next_circle = Circle(0,circle_height,0,next_radius,scale=1.0/points)
-		link_circles(current_circle,next_circle,points)
+		next_circle = Circle(0,circle_height,0,next_radius)
+		link_circles(polygons,current_circle,next_circle,points)
 		current_circle = next_circle
 	for i in xrange(circles/2):
-		circle_height -= circle_height_change
+		circle_height += circle_height_change
 		next_radius = hermite[circle_height/radius][0]
-		next_circle = Circle(0,circle_height,next_radius,scale=1.0/points)
-		link_circles(current_circle,next_circle,points)
+		next_circle = Circle(0,circle_height,next_radius)
+		link_circles(polygons,current_circle,next_circle,points)
 		current_circle = next_circle
 	end_point = Constant(Matrix[0,-radius])
-	#todo draw polygons
+	link_circles(polygons,current_circle,end_point,points)
+	return polygons * translate
