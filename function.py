@@ -139,6 +139,10 @@ class Circle(Function):
 		else:
 			return self.hermite_pi_2pi[(angle - self.half) * self.scale * 2]
 
+	def set_scale(self,scale):
+		self.scale = scale
+		self.half = (self.scale * 2.0) ** -1
+
 class Linear(Function):
 	"""
 	a linear graph function
