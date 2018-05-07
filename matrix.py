@@ -108,7 +108,7 @@ class Matrix:
 							m[row,col] += self[row,i] * other[i,col]
 				return m
 			else:
-				return None
+				raise IndexError
 		else:
 			raise TypeError
 

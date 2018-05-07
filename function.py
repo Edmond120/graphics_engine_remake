@@ -135,9 +135,11 @@ class Circle(Function):
 	def function(self,theta):
 		angle = theta % (self.half * 2)
 		if(angle < self.half):
-			return self.hermite_0_pi[angle * self.scale * 2]
+			ans = self.hermite_0_pi[angle * self.scale * 2]
 		else:
-			return self.hermite_pi_2pi[(angle - self.half) * self.scale * 2]
+			ans self.hermite_pi_2pi[(angle - self.half) * self.scale * 2]
+		ans[0].append(cz)
+		ans[0].append(1)
 
 	def set_scale(self,scale):
 		self.scale = scale
