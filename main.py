@@ -12,7 +12,7 @@ screen = new_screen()
 #shape = Torus(0,0,0,100,250,circles=10,edges=10)
 #shape = shape * make_rotX(math.radians(90)) * make_translate(250,250,0)
 
-shape = Sphere(250,200,0,100,circles=100,edges=50)
+shape = Sphere(250,200,0,100,circles=20,edges=10)
 shape.apply_modification(int)
 i = 0
 color = [255,0,0]

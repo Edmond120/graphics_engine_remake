@@ -82,19 +82,20 @@ def _make_sphere(x, y, z, radius, circles=150, edges=100):
 	polygons = Matrix([])
 	current_circle = start_point
 	circle_height = radius
-	circle_height_change = (2 * radius) / circles
+	diameter = radius * 2
+	circle_height_change = diameter / circles
 	for i in xrange(circles/2 + circles % 2):
 		circle_height -= circle_height_change
-		next_radius = hermite[1 - circle_height/radius][0]
-		next_circle = Circle(0,circle_height,0,next_radius)
+		next_radius = hermite[0.5 - circle_height/diameter][0]
+		next_circle = Circle(0,0,circle_height,next_radius)
 		link_circles(polygons,current_circle,next_circle,points)
 		current_circle = next_circle
 	for i in xrange(circles/2):
-		circle_height += circle_height_change
-		next_radius = hermite[circle_height/radius][0]
-		next_circle = Circle(0,circle_height,0,next_radius)
+		circle_height -= circle_height_change
+		next_radius = hermite[-0.5 * circle_height/diameter][0]
+		next_circle = Circle(0,0,circle_height,next_radius)
 		link_circles(polygons,current_circle,next_circle,points)
 		current_circle = next_circle
 	end_point = Constant([0,-radius,0,1])
 	link_circles(polygons,current_circle,end_point,points)
-	return polygons * translate
+	return polygons * make_rotX(math.pi / 2) * translate
