@@ -128,6 +128,7 @@ class Circle(Function):
 		t = r * 4
 		self.hermite_0_pi   = Hermite(cx,p1,cx,p2,t,0,-t,0)
 		self.hermite_pi_2pi = Hermite(cx,p2,cx,p1,-t,0,t,0)
+		self.cz = cz
 		if(scale != None):
 			self.scale = float(scale)
 			self.half = float(1/(scale * 2))
@@ -137,9 +138,10 @@ class Circle(Function):
 		if(angle < self.half):
 			ans = self.hermite_0_pi[angle * self.scale * 2]
 		else:
-			ans self.hermite_pi_2pi[(angle - self.half) * self.scale * 2]
-		ans[0].append(cz)
-		ans[0].append(1)
+			ans = self.hermite_pi_2pi[(angle - self.half) * self.scale * 2]
+		ans.append(self.cz)
+		ans.append(1)
+		return ans
 
 	def set_scale(self,scale):
 		self.scale = scale

@@ -78,7 +78,7 @@ def _make_sphere(x, y, z, radius, circles=150, edges=100):
 	translate = make_translate( x, y, z )
 	hermite = Hermite(0,radius,0,-radius,4 * radius,0,-4 * radius,0)
 
-	start_point = Constant(Matrix([0,radius]))
+	start_point = Constant(Matrix([0,radius,0,1]))
 	polygons = Matrix([])
 	current_circle = start_point
 	circle_height = radius
@@ -95,6 +95,6 @@ def _make_sphere(x, y, z, radius, circles=150, edges=100):
 		next_circle = Circle(0,circle_height,0,next_radius)
 		link_circles(polygons,current_circle,next_circle,points)
 		current_circle = next_circle
-	end_point = Constant([0,-radius])
+	end_point = Constant([0,-radius,0,1])
 	link_circles(polygons,current_circle,end_point,points)
 	return polygons * translate
