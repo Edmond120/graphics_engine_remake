@@ -23,7 +23,7 @@ def link_circles(polygons,circle1,circle2,points):
 	"""
 	p = 0
 	end = points
-	while(p + 1 < end):
+	while(p + 1 <= end):
 		polygons.extend([circle1[p],circle1[p + 1],circle2[p]])
 		polygons.extend([circle2[p],circle1[p + 1],circle2[p + 1]])
 		p += 1
@@ -77,25 +77,15 @@ def _make_sphere(x, y, z, radius, circles=150, edges=100):
 	points = edges
 	translate = make_translate( x, y, z )
 	hermite = Hermite(0,radius,0,-radius,4 * radius,0,-4 * radius,0)
-
-	start_point = Constant(Matrix([0,radius,0,1]))
+	hermite_points = hermite[0:1:1.0/circles]
+	b = 0
+	start_point = Constant(Matrix([0,0,radius,1]))
 	polygons = Matrix([])
 	current_circle = start_point
-	circle_height = radius
-	diameter = radius * 2
-	circle_height_change = diameter / circles
-	for i in xrange(circles/2 + circles % 2):
-		circle_height -= circle_height_change
-		next_radius = hermite[0.5 - circle_height/diameter][0]
-		next_circle = Circle(0,0,circle_height,next_radius)
-		link_circles(polygons,current_circle,next_circle,points)
-		current_circle = next_circle
-	for i in xrange(circles/2):
-		circle_height -= circle_height_change
-		next_radius = hermite[-0.5 * circle_height/diameter][0]
-		next_circle = Circle(0,0,circle_height,next_radius)
+	for hermite_point in hermite_points:
+		next_circle = Circle(0,0,hermite_point[1],hermite_point[0],scale=1.0/points)
 		link_circles(polygons,current_circle,next_circle,points)
 		current_circle = next_circle
 	end_point = Constant([0,-radius,0,1])
 	link_circles(polygons,current_circle,end_point,points)
-	return polygons * make_rotX(math.pi / 2) * translate
+	return polygons * translate

@@ -131,7 +131,7 @@ class Circle(Function):
 		self.cz = cz
 		if(scale != None):
 			self.scale = float(scale)
-			self.half = float(1/(scale * 2))
+			self.half = float(1/(scale * 2.0))
 
 	def function(self,theta):
 		angle = theta % (self.half * 2)
