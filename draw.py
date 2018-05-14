@@ -30,6 +30,30 @@ def draw_polygon(p0, p1, p2, screen, color):
 	draw_line( p1[0], p1[1], p2[0], p2[1], screen, color )
 	draw_line( p2[0], p2[1], p0[0], p0[1], screen, color )
 
+def _backface_culling(x0,y0,x1,y1,x2,y2):
+	if(x0 == x1):
+		return (y0 > y1 and x2 > x1) or (y0 < y1 and x2 < x0)
+	else:
+		slope = (float(y1) - y0) / (float(x1) - x0)
+		intercept = y0 - (slope * x0)
+		if(x0 > x1):
+			return y2 < (slope * x2 + intercept)
+		else:
+			return y2 > (slope * x2 + intercept)
+			
+
+def draw_polygons( matrix, screen, color):
+	for i in xrange(0,len(matrix),3):
+		polygon = (matrix[i],matrix[i + 1],matrix[i + 2],)
+		x0 = polygon[0][0]
+		x1 = polygon[1][0]
+		x2 = polygon[2][0]
+		y0 = polygon[0][1]
+		y1 = polygon[1][1]
+		y2 = polygon[2][1]
+		if(_backface_culling(x0,y0,x1,y1,x2,y2)):
+			draw_polygon(polygon[0],polygon[1],polygon[2],screen,color)
+
 def draw_line( x0, y0, x1, y1, screen, color ):
 
     #swap points if going right -> left
