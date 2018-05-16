@@ -12,11 +12,8 @@ screen = new_screen()
 #shape = Torus(0,0,0,100,250,circles=10,edges=10)
 #shape = shape * make_rotX(math.radians(90)) * make_translate(250,250,0)
 
-shape = Sphere(250,200,0,100,circles=20,edges=10)
+shape = Box(0,0,0,250,100,50) * make_translate(-125,-50,-25) * make_rotY(math.degrees(20)) * make_rotX(math.degrees(20)) * make_translate(125,50,25) * make_translate(0,200,0)
 shape.apply_modification(int)
-i = 0
 color = [255,0,0]
-while(i + 2 < len(shape)):
-	draw_polygon(shape[i],shape[i + 1],shape[i + 2],screen,color)
-	i += 3
+draw_polygons(shape,screen,color)
 display(screen)

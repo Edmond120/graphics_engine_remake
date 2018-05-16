@@ -92,7 +92,7 @@ def _make_sphere(x, y, z, radius, circles=150, edges=100):
 
 class Box(Matrix):
 	def __init__(self, x, y, z, height, width, depth):
-		Matrix.__init__(self,make_box(x,y,z,height,width,depth))
+		Matrix.__init__(self,_make_box(x,y,z,height,width,depth))
 
 def _make_box(x, y, z, height, width, depth):
 	"""
@@ -100,15 +100,30 @@ def _make_box(x, y, z, height, width, depth):
 	"""
 	polygons = Matrix([])
 	#points (front)
-	p2 = [x, y + height, z]; p3 = [x + width, y + height, z]
-	p0 = [x,y,z];            p1 = [x + width, y, z]
+	p2 = [x, y + height, z,1]; p3 = [x + width, y + height, z,1]
+	p0 = [x,y,z,1];            p1 = [x + width, y, z,1]
 	#points (back)
-	p2b = [x, y + height, z + depth]; p3b = [x + width, y + height, z + depth]
-	p0b = [x,y,z + depth];            p1b = [x + width, y, z + depth]
+	p2b = [x, y + height, z + depth,1]; p3b = [x + width, y + height, z + depth,1]
+	p0b = [x,y,z + depth,1];            p1b = [x + width, y, z + depth,1]
 	
 	polygons.extend([\
 					#front face
-					 p0,p1,p3  ,p0,p3,p2,\
-					 p0b,p1b,p3b,p0b,p3b,p2b,\
+					p0 ,p1 ,p3 ,\
+					p2 ,p3 ,p0 ,\
 					#back face
-					 [
+					p0b,p1b,p3b,\
+					p2b,p3b,p0b,\
+					#top face
+					p0 ,p0b,p1 ,\
+					p0b,p1b,p1 ,\
+					#bottom face
+					p2 ,p2b,p3 ,\
+					p3 ,p3b,p2b,\
+					#right face
+					p1 ,p1b,p3 ,\
+					p3 ,p3b,p1b,\
+					#left face
+					p2 ,p0b,p0 ,\
+					p2 ,p2b,p0b,\
+					])
+	return polygons

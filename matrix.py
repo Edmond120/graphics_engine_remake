@@ -152,7 +152,7 @@ class Matrix:
 	def extend(self, item):
 		if(isinstance(item, Matrix)):
 			self.matrix.extend(item.matrix)
-		elif isinstance(item, list):
+		elif isinstance(item, list) or isinstance(item,tuple):
 			self.matrix.extend(item)
 		else:
 			raise TypeError
