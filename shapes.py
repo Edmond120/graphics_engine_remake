@@ -10,8 +10,8 @@ def link_circle_matrices(polygons,circle,next_circle):
 	p = 0
 	end = len(circle)
 	while(p + 1 < end):
-		polygons.extend([circle[p],circle[p + 1],next_circle[p]])
-		polygons.extend([next_circle[p],circle[p + 1],next_circle[p + 1]])
+		polygons.extend([circle[p + 1],circle[p],next_circle[p]])
+		polygons.extend([next_circle[p],next_circle[p + 1],circle[p + 1]])
 		p += 1
 
 def link_circles(polygons,circle1,circle2,points):
@@ -24,8 +24,8 @@ def link_circles(polygons,circle1,circle2,points):
 	p = 0
 	end = points
 	while(p + 1 <= end):
-		polygons.extend([circle1[p],circle1[p + 1],circle2[p]])
-		polygons.extend([circle2[p],circle1[p + 1],circle2[p + 1]])
+		polygons.extend([circle1[p + 1],circle1[p],circle2[p]])
+		polygons.extend([circle2[p],circle2[p + 1],circle1[p + 1]])
 		p += 1
 
 class Torus(Matrix):
@@ -44,11 +44,6 @@ def _make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 	translate = make_translate( x, y, z )
 	circle_function = Circle(radius2 - radius1,0,0,radius1,scale=1.0/points)
 	circle = Matrix( list(circle_function[0:points:1]) )
-
-	#format points cuz the matrix only has x and y
-	for point in circle:
-		point.append(0)
-		point.append(1)
 
 	theta = (math.pi * 2) / circles
 
