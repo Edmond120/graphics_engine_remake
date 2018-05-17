@@ -109,21 +109,21 @@ def _make_box(x, y, z, height, width, depth):
 	polygons.extend([\
 					#front face
 					p0 ,p1 ,p3 ,\
-					p2 ,p3 ,p0 ,\
+					p3 ,p2 ,p0 ,\
 					#back face
-					p0b,p1b,p3b,\
-					p2b,p3b,p0b,\
+					p1b,p0b,p2b,\
+					p2b,p3b,p1b,\
 					#top face
-					p0 ,p0b,p1 ,\
-					p0b,p1b,p1 ,\
-					#bottom face
-					p2 ,p2b,p3 ,\
+					p2b,p2,p3 ,\
 					p3 ,p3b,p2b,\
+					#bottom face
+					p1b,p1 ,p0 ,\
+					p0 ,p0b,p1b,\
 					#right face
-					p1 ,p1b,p3 ,\
-					p3 ,p3b,p1b,\
+					p3b,p3 ,p1 ,\
+					p1 ,p1b,p3b,\
 					#left face
-					p2 ,p0b,p0 ,\
+					p0b,p0 ,p2 ,\
 					p2 ,p2b,p0b,\
 					])
 	return polygons
