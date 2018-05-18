@@ -35,12 +35,17 @@ class Stack():
 class Screen():
 	"""
 	wrapper for screen
-
-	used to include things like zbuffer
 	"""
 
-	def __init__(self, width=XRES, height=YRES):
+	def __init__(self, width=XRES, height=YRES, color):
 		self.screen = new_screen(width,height)
+		self.color = color
+		self.zbuffer = []
+		for r in xrange(height):
+			row = []
+			self.zbuffer.append(row)
+			for c in xrange(width):
+				row.append(None)
 
 	def clear_screen(self):
 		clear_screen(self.screen)
@@ -54,11 +59,14 @@ class Screen():
 	def display(self):
 		display(self.screen)
 
-	def draw_line( x0, y0, x1, y1, color):
-		draw_line( x0, y0, x1, y1, self.screen, color )
+	def draw_line( x0, y0, z0, x1, y1, z1, color=self.color):
+		draw_line( x0, y0, z0, x1, y1, z1, self.screen, color, self.zbuffer )
 
-	def draw_lines( matrix, color):
-		draw_lines( matrix, self.screen, color)
+	def draw_lines( matrix, color=self.color):
+		draw_lines( matrix, self.screen, color, self.zbuffer)
 
-	def draw_polygon(p0, p1, p2, color):
-		draw_polygon(p0, p1, p2, self.screen, color)
+	def draw_polygon(p0, p1, p2, color=self.color):
+		draw_polygon(p0, p1, p2, self.screen, color, self.zbuffer)
+
+	def draw_polygons(matrix,color=self.color):
+		draw_polygons(matrix, self.screen, color, self.zbuffer)

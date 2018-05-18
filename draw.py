@@ -1,7 +1,7 @@
 from display import *
 from matrix import *
 
-def draw_lines( matrix, screen, color ):
+def draw_lines( matrix, screen, color ,zbuffer):
     if len(matrix) < 2:
         print 'Need at least 2 points to draw'
         return
@@ -10,9 +10,11 @@ def draw_lines( matrix, screen, color ):
     while point < len(matrix) - 1:
         draw_line( matrix[point][0],
                    matrix[point][1],
+				   matrix[point][2],
                    matrix[point+1][0],
                    matrix[point+1][1],
-                   screen, color)    
+				   matrix[point+1][2],
+                   screen, color, zbuffer)    
         point+= 2
         
 def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
@@ -25,10 +27,10 @@ def link_points( matrix, p0, p1 ):
 def add_point( matrix, x, y, z=0 ):
     matrix.append( [x, y, z, 1] )
     
-def draw_polygon(p0, p1, p2, screen, color):
-	draw_line( p0[0], p0[1], p1[0], p1[1], screen, color )
-	draw_line( p1[0], p1[1], p2[0], p2[1], screen, color )
-	draw_line( p2[0], p2[1], p0[0], p0[1], screen, color )
+def draw_polygon(p0, p1, p2, screen, color, zbuffer):
+	draw_line( p0[0], p0[1], p0[2], p1[0], p1[1], p1[2], screen, color ,zbuffer)
+	draw_line( p1[0], p1[1], p1[2], p2[0], p2[1], p2[2], screen, color ,zbuffer)
+	draw_line( p2[0], p2[1], p2[2], p0[0], p0[1], p0[2], screen, color ,zbuffer)
 
 def _backface_culling(x0,y0,x1,y1,x2,y2):
 	if(x0 == x1):
@@ -42,7 +44,7 @@ def _backface_culling(x0,y0,x1,y1,x2,y2):
 			return y2 > (slope * x2 + intercept)
 			
 
-def draw_polygons( matrix, screen, color):
+def draw_polygons( matrix, screen, color, zbuffer):
 	for i in xrange(0,len(matrix),3):
 		polygon = (matrix[i],matrix[i + 1],matrix[i + 2],)
 		x0 = polygon[0][0]
@@ -52,9 +54,9 @@ def draw_polygons( matrix, screen, color):
 		y1 = polygon[1][1]
 		y2 = polygon[2][1]
 		if(_backface_culling(x0,y0,x1,y1,x2,y2)):
-			draw_polygon(polygon[0],polygon[1],polygon[2],screen,color)
+			draw_polygon(polygon[0],polygon[1],polygon[2],screen,color,zbuffer)
 
-def draw_line( x0, y0, x1, y1, screen, color ):
+def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
 
     #swap points if going right -> left
     if x0 > x1:
@@ -78,14 +80,14 @@ def draw_line( x0, y0, x1, y1, screen, color ):
             d = A + B/2
 
             while x < x1:
-                plot(screen, color, x, y)
+                plot(screen, color, x, y, z, zbuffer)
                 if d > 0:
                     y+= 1
                     d+= B
                 x+= 1
                 d+= A
             #end octant 1 while
-            plot(screen, color, x1, y1)
+            plot(screen, color, x1, y1, z, zbuffer)
         #end octant 1
 
         #octant 8
@@ -93,14 +95,14 @@ def draw_line( x0, y0, x1, y1, screen, color ):
             d = A - B/2
 
             while x < x1:
-                plot(screen, color, x, y)
+                plot(screen, color, x, y, z, zbuffer)
                 if d < 0:
                     y-= 1
                     d-= B
                 x+= 1
                 d+= A
             #end octant 8 while
-            plot(screen, color, x1, y1)
+            plot(screen, color, x1, y1, z, zbuffer)
         #end octant 8
     #end octants 1 and 8
 
@@ -111,14 +113,14 @@ def draw_line( x0, y0, x1, y1, screen, color ):
             d = A/2 + B
 
             while y < y1:
-                plot(screen, color, x, y)
+                plot(screen, color, x, y, z, zbuffer)
                 if d < 0:
                     x+= 1
                     d+= A
                 y+= 1
                 d+= B
             #end octant 2 while
-            plot(screen, color, x1, y1)
+            plot(screen, color, x1, y1, z, zbuffer)
         #end octant 2
 
         #octant 7
@@ -126,14 +128,14 @@ def draw_line( x0, y0, x1, y1, screen, color ):
             d = A/2 - B;
 
             while y > y1:
-                plot(screen, color, x, y)
+                plot(screen, color, x, y, z, zbuffer)
                 if d > 0:
                     x+= 1
                     d+= A
                 y-= 1
                 d-= B
             #end octant 7 while
-            plot(screen, color, x1, y1)
+            plot(screen, color, x1, y1, z, zbuffer)
         #end octant 7
     #end octants 2 and 7
 #end draw_line
