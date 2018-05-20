@@ -37,7 +37,7 @@ class Screen():
 	wrapper for screen
 	"""
 
-	def __init__(self, width=XRES, height=YRES, color):
+	def __init__(self, width=XRES, height=YRES, color=[255,0,0]):
 		self.screen = new_screen(width,height)
 		self.color = color
 		self.zbuffer = []
@@ -70,3 +70,9 @@ class Screen():
 
 	def draw_polygons(matrix,color=self.color):
 		draw_polygons(matrix, self.screen, color, self.zbuffer)
+
+	def fill_polygon(p0, p1, p2, color=self.color):
+		fill_polygon(p0, p1, p2, self.screen, color, self.zbuffer)
+
+	def fill_polygons(matrix,color=self.color):
+		fill_polygons(matrix, self.screen, color, self.zbuffer)

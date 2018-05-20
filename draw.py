@@ -139,3 +139,9 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
         #end octant 7
     #end octants 2 and 7
 #end draw_line
+
+def fill_polygon(p0, p1, p2, screen, color, zbuffer):
+	pass
+
+def fill_polygon(matrix, screen, color, zbuffer):
+	pass
