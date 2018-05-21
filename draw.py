@@ -168,7 +168,39 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
 #end draw_line
 
 def fill_polygon(p0, p1, p2, screen, color, zbuffer):
-	pass
+	if(p0[0] == p1[0] == p2[0]) or (p0[1] == p1[1] == p2[1]):
+		return
+	points = [p0,p1,p2]
+	for i in xrange(2):
+		for ii in xrange(2 - i):
+			if points[ii][1] < points[ii + 1][1]:
+				temp = points[ii]
+				points[ii] = points[ii + 1]
+				points[ii + 1] = temp
+			elif points[ii][0] == points[ii + 1][0] and\
+				 points[ii][1] == points[ii + 1][1]:
+				return
+	if points[0][1] == points[1][1]:
+		if points[0][0] < points[1][0]:
+			start_line = Line(points[2],points[0])
+			end_line   = Line(points[2],points[1])
+		else:
+			start_line = Line(points[2],points[1])
+			end_line   = Line(points[2],points[0])
+	elif points[1][1] == points[2][1]:
+		if points[1][0] < points[2][0]:
+			start_line = Line(points[0],points[1])
+			end_line   = Line(points[0],points[2])
+		else:
+			start_line = Line(points[0],points[2])
+			end_line   = Line(points[0],points[1])
+	elif points[0][0] < points[1][0]:
+		start_line = Line(points[0],points[2]
+		end_line   = Polyline(*points)
+	elif points[0][0] > points[1][0]:
+		start_line = Polyline(*points)
+		end_line   = Line(points[0],points[2]
+	elif
 
 def fill_polygons(matrix, screen, color, zbuffer):
 	for polygon in matrix:
