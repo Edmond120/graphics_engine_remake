@@ -56,6 +56,31 @@ def draw_polygons( matrix, screen, color, zbuffer):
 		if(_backface_culling(x0,y0,x1,y1,x2,y2)):
 			draw_polygon(polygon[0],polygon[1],polygon[2],screen,color,zbuffer)
 
+def _get_z(x0,y0,z0,x1,y1,z1):
+	x1m0 = x1 - x0
+	y1m0 = y1 - y0
+	z1m0 = z1 - z0
+	if(z1m0 == 0):
+		def gz(x,y):
+			return z0
+		return gz
+	elif(x1m0 == 0 and y1m0 == 0):
+		z = z1 if z1 > z0 else z0
+		def gz(x,y):
+			return z
+	elif(x1m0 == 0):
+		s = (z1 - z0) / (y1 - y0)
+		i = z0 - (y0 * s)
+		def gz(x,y):
+			return y * s + i
+	else:
+		s = (z1 - z0) / (x1 - x0)
+		i = z0 - (x0 * s)
+		def gz(x,y):
+			return x * s + i
+	return gz
+	
+
 def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
 
     #swap points if going right -> left
@@ -72,6 +97,8 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
     A = 2 * (y1 - y0)
     B = -2 * (x1 - x0)
 
+    gz = _get_z(x0,y0,z0,x1,y1,z1)
+
     #octants 1 and 8
     if ( abs(x1-x0) >= abs(y1 - y0) ):
 
@@ -80,14 +107,14 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
             d = A + B/2
 
             while x < x1:
-                plot(screen, color, x, y, z, zbuffer)
+                plot(screen, color, x, y, gz(x,y), zbuffer)
                 if d > 0:
                     y+= 1
                     d+= B
                 x+= 1
                 d+= A
             #end octant 1 while
-            plot(screen, color, x1, y1, z, zbuffer)
+            plot(screen, color, x1, y1, gz(x,y), zbuffer)
         #end octant 1
 
         #octant 8
@@ -95,14 +122,14 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
             d = A - B/2
 
             while x < x1:
-                plot(screen, color, x, y, z, zbuffer)
+                plot(screen, color, x, y, gz(x,y), zbuffer)
                 if d < 0:
                     y-= 1
                     d-= B
                 x+= 1
                 d+= A
             #end octant 8 while
-            plot(screen, color, x1, y1, z, zbuffer)
+            plot(screen, color, x1, y1, gz(x,y), zbuffer)
         #end octant 8
     #end octants 1 and 8
 
@@ -113,14 +140,14 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
             d = A/2 + B
 
             while y < y1:
-                plot(screen, color, x, y, z, zbuffer)
+                plot(screen, color, x, y, gz(x,y), zbuffer)
                 if d < 0:
                     x+= 1
                     d+= A
                 y+= 1
                 d+= B
             #end octant 2 while
-            plot(screen, color, x1, y1, z, zbuffer)
+            plot(screen, color, x1, y1, gz(x,y), zbuffer)
         #end octant 2
 
         #octant 7
@@ -128,14 +155,14 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
             d = A/2 - B;
 
             while y > y1:
-                plot(screen, color, x, y, z, zbuffer)
+                plot(screen, color, x, y, gz(x,y), zbuffer)
                 if d > 0:
                     x+= 1
                     d+= A
                 y-= 1
                 d-= B
             #end octant 7 while
-            plot(screen, color, x1, y1, z, zbuffer)
+            plot(screen, color, x1, y1, gz(x,y), zbuffer)
         #end octant 7
     #end octants 2 and 7
 #end draw_line
@@ -143,5 +170,6 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
 def fill_polygon(p0, p1, p2, screen, color, zbuffer):
 	pass
 
-def fill_polygon(matrix, screen, color, zbuffer):
-	pass
+def fill_polygons(matrix, screen, color, zbuffer):
+	for polygon in matrix:
+		fill_polygon(polygon[0],polygon[1],polygon[2],screen,color,zbuffer)

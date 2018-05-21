@@ -59,20 +59,20 @@ class Screen():
 	def display(self):
 		display(self.screen)
 
-	def draw_line( x0, y0, z0, x1, y1, z1, color=self.color):
-		draw_line( x0, y0, z0, x1, y1, z1, self.screen, color, self.zbuffer )
+	def draw_line(self, x0, y0, z0, x1, y1, z1):
+		draw_line( x0, y0, z0, x1, y1, z1, self.screen, self.color, self.zbuffer )
 
-	def draw_lines( matrix, color=self.color):
-		draw_lines( matrix, self.screen, color, self.zbuffer)
+	def draw_lines(self, matrix ):
+		draw_lines( matrix, self.screen, self.color, self.zbuffer)
 
-	def draw_polygon(p0, p1, p2, color=self.color):
-		draw_polygon(p0, p1, p2, self.screen, color, self.zbuffer)
+	def draw_polygon(self,p0, p1, p2):
+		draw_polygon(p0, p1, p2, self.screen, self.color, self.zbuffer)
 
-	def draw_polygons(matrix,color=self.color):
-		draw_polygons(matrix, self.screen, color, self.zbuffer)
+	def draw_polygons(self,matrix):
+		draw_polygons(matrix, self.screen, self.color, self.zbuffer)
 
-	def fill_polygon(p0, p1, p2, color=self.color):
-		fill_polygon(p0, p1, p2, self.screen, color, self.zbuffer)
+	def fill_polygon(self,p0, p1, p2):
+		fill_polygon(p0, p1, p2, self.screen, self.color, self.zbuffer)
 
-	def fill_polygons(matrix,color=self.color):
-		fill_polygons(matrix, self.screen, color, self.zbuffer)
+	def fill_polygons(self,matrix):
+		fill_polygons(matrix, self.screen, self.color, self.zbuffer)
