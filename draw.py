@@ -196,16 +196,16 @@ def fill_polygon(p0, p1, p2, screen, color, zbuffer):
 			end_line   = Line(points[0],points[1])
 	elif points[0][0] < points[1][0]:
 		start_line = Line(points[0],points[2])
-		end_line   = polyline(*points)
+		end_line   = PolylineY(points)
 	elif points[0][0] > points[1][0]:
-		start_line = Polyline(*points)
+		start_line = PolylineY(points)
 		end_line   = Line(points[0],points[2])
 	elif point[1][0] < points[2][0]:
-		start_line = Polyline(*points)
+		start_line = PolylineY(points)
 		end_line   = Line(points[0],points[2])
 	else:
 		start_line = line(points[0],points[2])
-		end_line   = polyline(*points)
+		end_line   = PolylineY(points)
 
 def fill_polygons(matrix, screen, color, zbuffer):
 	for polygon in matrix:

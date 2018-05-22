@@ -2,6 +2,7 @@ import math
 
 from matrix import *
 from function import *
+from geometry import *
 
 def link_circle_matrices(polygons,circle,next_circle):
 	"""
