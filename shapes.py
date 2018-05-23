@@ -29,9 +29,16 @@ def link_circles(polygons,circle1,circle2,points):
 		polygons.extend([circle2[p],circle2[p + 1],circle1[p + 1]])
 		p += 1
 
-class Torus(Matrix):
+class Solid(Matrix):
+	def __init__(self,matrix):
+		Matrix.__init__(self,matrix)
+
+	def draw(self,screen):
+		screen.draw_polygons(self)
+
+class Torus(Solid):
 	def __init__(self,x, y, z, radius1, radius2, circles=150,edges=100):
-		Matrix.__init__(self,_make_torus(x,y,z,radius1,radius2,circles,edges))
+		Solid.__init__(self,_make_torus(x,y,z,radius1,radius2,circles,edges))
 
 def _make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 	"""
@@ -56,9 +63,9 @@ def _make_torus(x, y, z, radius1, radius2, circles=150,edges=100):
 		circle = next_circle
 	return polygons * translate
 
-class Sphere(Matrix):
+class Sphere(Solid):
 	def __init__(self, x, y, z, radius, circles=150, edges=100):
-		Matrix.__init__(self,_make_sphere(x,y,z,radius,circles,edges))
+		Solid.__init__(self,_make_sphere(x,y,z,radius,circles,edges))
 
 def _make_sphere(x, y, z, radius, circles=150, edges=100):
 	"""
@@ -86,9 +93,9 @@ def _make_sphere(x, y, z, radius, circles=150, edges=100):
 	link_circles(polygons,current_circle,end_point,points)
 	return polygons * translate
 
-class Box(Matrix):
+class Box(Solid):
 	def __init__(self, x, y, z, height, width, depth):
-		Matrix.__init__(self,_make_box(x,y,z,height,width,depth))
+		Solid.__init__(self,_make_box(x,y,z,height,width,depth))
 
 def _make_box(x, y, z, height, width, depth):
 	"""

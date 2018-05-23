@@ -31,20 +31,43 @@ class Line:
 		else:
 			return (ycor - self.intercept)/self.slope
 
-class PolylineX():
+class Polyline():
 	"""
 	a class for math with polylines
-	only polylines that could be a mathmatical function 
-	rotation are valid for now
+	WARNING incomplete class with few features
 	"""
 	def __init__(self,point_list):
-		pass
+		"point_list is a list with at least 2 points"
+		self.lines = []
+		for p in xrange(1,len(point_list)):
+			self.lines.append(Line(point_list[p-1],point_list[p]))
 
-class PolylineY:
-	"""
-	a class for math with polylines
-	only polylines that could be a mathmatical function 
-	rotation are valid for now
-	"""
-	def __init__(self,point_list):
-		pass
+	def getY(xcor):
+		"gets the first matching ycor"
+		for line in self.lines:
+			if line.p0[0] <= xcor <= line.p1[0] or line.p0[0] >= xcor >= line.p1[0]:
+				return line.getY(xcor)
+		return None
+
+	def getX(ycor):
+		"gets the first matching xcor"
+		for line in self.lines:
+			if line.p0[0] <= ycor <= line.p1[1] or line.p0[0] >= ycor >= line.p1[1]:
+				return line.getX(ycor)
+		return None
+
+	def getYs(xcor):
+		"returns a list of all matching ycors"
+		matches = []
+		for line in self.lines:
+			if line.p0[0] <= xcor <= line.p1[0] or line.p0[0] >= xcor >= line.p1[0]:
+				matches.append(line.getY(xcor))
+		return matches
+
+	def getXs(ycor):
+		"returns a list of all matching xcors"
+		matches = []
+		for line in self.lines:
+			if line.p1[0] <= ycor <= line.p1[1] or line.p1[0] >= ycor >= line.p1[1]:
+				matches.append(line.getX(ycor))
+		return matches
