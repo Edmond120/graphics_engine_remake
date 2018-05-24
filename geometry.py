@@ -8,28 +8,36 @@ class Line:
 	only uses xcor and ycor
 	"""
 	def __init__(self,point0,point1):
+		point0[0] = float(point0[0])
+		point0[1] = float(point0[1])
+		point1[0] = float(point1[0])
+		point1[1] = float(point1[1])
 		self.p0 = point0
 		self.p1 = point1
-		if(point0[0] == point1[0]):
-			self.slope = None
-			self.y_intercept = None if point0[0] != 0 else 0
-		else:
-			self.slope = (float(point1[1]) - point0[1])/(float(point1[0]) - point0[0])
-			self.y_intercept = float(point0[1]) - (point0[0] * self.slope)
 
-	def getY(xcor):
-		if(self.slope == None):
-			return None
+		#change in y based off change in x
+		if point0[0] == point1[0]:
+			self.xy_slope = None
+			self.getY = Constant(None).function
+			self.y_intercept = 0 if point0[0] == 0 else None
 		else:
-			return self.slope * xcor + self.y_intercept
+			self.xy_slope = (point1[1] - point0[1])/(point1[0] - point0[0])
+			self.y_intercept = point0[1] - (point0[0] * self.xy_slope)
 
-	def getX(ycor):
-		if(self.slope == 0):
-			return None
-		elif(self.slope == None):
-			return self.p0[0]
+		#change in x based off change in y
+		if point0[1] == point1[1]:
+			self.yx_slope = None
+			self.getX = Constant(None).function
+			self.x_intercept = 0 if point0[1] == 0 else None
 		else:
-			return (ycor - self.intercept)/self.slope
+			self.yx_slope = (point1[0] - point0[0])/(point1[1] - point0[1])
+			self.x_intercept = point0[0] - (point0[0] * self.yx_slope)
+
+	def getY(self,xcor):
+		return self.xy_slope * xcor + self.y_intercept
+
+	def getX(self,ycor):
+		return self.yx_slope * ycor + self.x_intercept
 
 class Polyline():
 	"""

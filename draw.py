@@ -207,6 +207,9 @@ def fill_polygon(p0, p1, p2, screen, color, zbuffer):
 		start_line = line(points[0],points[2])
 		end_line   = Polyline(points)
 
+	for ycor in xrange(int(points[0][1]),int(points[2][1]),-1):
+		pass
+
 def fill_polygons(matrix, screen, color, zbuffer):
 	for polygon in matrix:
 		fill_polygon(polygon[0],polygon[1],polygon[2],screen,color,zbuffer)
