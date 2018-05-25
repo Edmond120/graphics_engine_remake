@@ -8,10 +8,8 @@ class Line:
 	only uses xcor and ycor
 	"""
 	def __init__(self,point0,point1):
-		point0[0] = float(point0[0])
-		point0[1] = float(point0[1])
-		point1[0] = float(point1[0])
-		point1[1] = float(point1[1])
+		point0 = ( float(point0[0]),float(point0[1]), )
+		point1 = ( float(point1[0]),float(point1[1]), )
 		self.p0 = point0
 		self.p1 = point1
 
