@@ -207,9 +207,10 @@ def fill_polygon(p0, p1, p2, screen, color, zbuffer):
 		start_line = line(points[0],points[2])
 		end_line   = Polyline(points)
 
+	zline = line(points[1],points[2]) #switch ycors with zcors here, also if the slope is None then return
 	for ycor in xrange(int(points[0][1]),int(points[2][1]),-1):
 		for xcor in xrange( int(start_line.getX(ycor)), int(end_line.getX(ycor))+1 ):
-			plot(screen,color,ycor,xcor,zcor)
+			plot(screen,color,ycor,xcor,zline.getY(xcor)
 
 def fill_polygons(matrix, screen, color, zbuffer):
 	for polygon in matrix:
