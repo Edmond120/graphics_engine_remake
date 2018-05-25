@@ -37,6 +37,15 @@ class Line:
 	def getX(self,ycor):
 		return self.yx_slope * ycor + self.x_intercept
 
+	def __str__(self):
+		s = "p0: " + str(self.p0)
+		s += "\np1: " + str(self.p1)
+		s += "\nxy_slope: " + str(self.xy_slope)
+		s += "\nyx_slope: " + str(self.yx_slope)
+		s += "\ny_intercept: " + str(self.y_intercept)
+		s += "\nx_intercept: " + str(self.x_intercept)
+		return s
+
 class Polyline():
 	"""
 	a class for math with polylines
@@ -48,21 +57,21 @@ class Polyline():
 		for p in xrange(1,len(point_list)):
 			self.lines.append(Line(point_list[p-1],point_list[p]))
 
-	def getY(xcor):
+	def getY(self,xcor):
 		"gets the first matching ycor"
 		for line in self.lines:
 			if line.p0[0] <= xcor <= line.p1[0] or line.p0[0] >= xcor >= line.p1[0]:
 				return line.getY(xcor)
 		return None
 
-	def getX(ycor):
+	def getX(self,ycor):
 		"gets the first matching xcor"
 		for line in self.lines:
-			if line.p0[0] <= ycor <= line.p1[1] or line.p0[0] >= ycor >= line.p1[1]:
+			if line.p0[1] <= ycor <= line.p1[1] or line.p0[1] >= ycor >= line.p1[1]:
 				return line.getX(ycor)
 		return None
 
-	def getYs(xcor):
+	def getYs(self,xcor):
 		"returns a list of all matching ycors"
 		matches = []
 		for line in self.lines:
@@ -70,7 +79,7 @@ class Polyline():
 				matches.append(line.getY(xcor))
 		return matches
 
-	def getXs(ycor):
+	def getXs(self,ycor):
 		"returns a list of all matching xcors"
 		matches = []
 		for line in self.lines:

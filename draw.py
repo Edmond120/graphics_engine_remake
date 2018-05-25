@@ -1,5 +1,6 @@
 from display import *
 from matrix import *
+from geometry import *
 
 def draw_lines( matrix, screen, color ,zbuffer):
 	if len(matrix) < 2:
@@ -168,8 +169,10 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
 #end draw_line
 
 def fill_polygon(p0, p1, p2, screen, color, zbuffer):
+	print "points",p0,p1,p2
 	if(p0[0] == p1[0] == p2[0]) or (p0[1] == p1[1] == p2[1]):
 		return
+
 	points = [p0,p1,p2]
 	for i in xrange(2):
 		for ii in xrange(2 - i):
@@ -180,6 +183,15 @@ def fill_polygon(p0, p1, p2, screen, color, zbuffer):
 			elif points[ii][0] == points[ii + 1][0] and \
 				 points[ii][1] == points[ii + 1][1]:
 				return
+
+	print "sorted points",points
+	zline = Line(
+				 (points[0][0],points[0][2],points[0][1],),
+				 (points[1][0],points[1][2],points[1][1],),
+				)
+	if zline.xy_slope == 0:
+		return
+
 	if points[0][1] == points[1][1]:
 		if points[0][0] < points[1][0]:
 			start_line = Line(points[2],points[0])
@@ -200,18 +212,25 @@ def fill_polygon(p0, p1, p2, screen, color, zbuffer):
 	elif points[0][0] > points[1][0]:
 		start_line = Polyline(points)
 		end_line   = Line(points[0],points[2])
-	elif point[1][0] < points[2][0]:
+	elif points[1][0] < points[2][0]:
 		start_line = Polyline(points)
 		end_line   = Line(points[0],points[2])
 	else:
-		start_line = line(points[0],points[2])
+		start_line = Line(points[0],points[2])
 		end_line   = Polyline(points)
 
-	zline = line(points[1],points[2]) #switch ycors with zcors here, also if the slope is None then return
+	print "start line"
+	print start_line
+	print "-----------------------"
+	print "end line"
+	print end_line
+	print "-----------------------"
 	for ycor in xrange(int(points[0][1]),int(points[2][1]),-1):
+		print "ycor:",ycor
+		print "xcors:",int(start_line.getX(ycor)),int(end_line.getX(ycor))+1
 		for xcor in xrange( int(start_line.getX(ycor)), int(end_line.getX(ycor))+1 ):
-			plot(screen,color,ycor,xcor,zline.getY(xcor)
+			plot(screen,color,ycor,xcor,zline.getY(xcor),zbuffer)
 
 def fill_polygons(matrix, screen, color, zbuffer):
-	for polygon in matrix:
-		fill_polygon(polygon[0],polygon[1],polygon[2],screen,color,zbuffer)
+	for i in xrange(0,3,3): #for i in xrange(0,len(matrix),3):
+		fill_polygon(matrix[i],matrix[i + 1],matrix[i + 2],screen,color,zbuffer)
