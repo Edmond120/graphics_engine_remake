@@ -196,41 +196,53 @@ def fill_polygon(p0, p1, p2, screen, color, zbuffer):
 		if points[0][0] < points[1][0]:
 			start_line = Line(points[2],points[0])
 			end_line   = Line(points[2],points[1])
+			print 1
 		else:
 			start_line = Line(points[2],points[1])
 			end_line   = Line(points[2],points[0])
+			print 2
 	elif points[1][1] == points[2][1]:
 		if points[1][0] < points[2][0]:
 			start_line = Line(points[0],points[1])
 			end_line   = Line(points[0],points[2])
+			print 3
 		else:
 			start_line = Line(points[0],points[2])
 			end_line   = Line(points[0],points[1])
+			print 4
 	elif points[0][0] < points[1][0]:
 		start_line = Line(points[0],points[2])
 		end_line   = Polyline(points)
+		print 5
 	elif points[0][0] > points[1][0]:
 		start_line = Polyline(points)
 		end_line   = Line(points[0],points[2])
+		for line in start_line.lines:
+			print line
+			print "--------"
+		print end_line
+		print 6
 	elif points[1][0] < points[2][0]:
 		start_line = Polyline(points)
 		end_line   = Line(points[0],points[2])
+		print 7
 	else:
 		start_line = Line(points[0],points[2])
 		end_line   = Polyline(points)
+		print 8
 
-	print "start line"
-	print start_line
-	print "-----------------------"
-	print "end line"
-	print end_line
-	print "-----------------------"
 	for ycor in xrange(int(points[0][1]),int(points[2][1]),-1):
-		print "ycor:",ycor
-		print "xcors:",int(start_line.getX(ycor)),int(end_line.getX(ycor))+1
 		for xcor in xrange( int(start_line.getX(ycor)), int(end_line.getX(ycor))+1 ):
 			plot(screen,color,ycor,xcor,zline.getY(xcor),zbuffer)
 
 def fill_polygons(matrix, screen, color, zbuffer):
-	for i in xrange(0,3,3): #for i in xrange(0,len(matrix),3):
-		fill_polygon(matrix[i],matrix[i + 1],matrix[i + 2],screen,color,zbuffer)
+	for i in xrange(0,len(matrix),3):
+		polygon = (matrix[i],matrix[i + 1],matrix[i + 2],)
+		x0 = polygon[0][0]
+		x1 = polygon[1][0]
+		x2 = polygon[2][0]
+		y0 = polygon[0][1]
+		y1 = polygon[1][1]
+		y2 = polygon[2][1]
+		if(_backface_culling(x0,y0,x1,y1,x2,y2)):
+			fill_polygon(polygon[0],polygon[1],polygon[2],screen,color,zbuffer)
