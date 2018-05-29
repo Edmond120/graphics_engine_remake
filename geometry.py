@@ -29,7 +29,7 @@ class Line:
 			self.x_intercept = 0 if point0[1] == 0 else None
 		else:
 			self.yx_slope = (point1[0] - point0[0])/(point1[1] - point0[1])
-			self.x_intercept = point0[0] - (point0[0] * self.yx_slope)
+			self.x_intercept = point0[0] - (point0[1] * self.yx_slope)
 
 	def getY(self,xcor):
 		return self.xy_slope * xcor + self.y_intercept

@@ -169,7 +169,6 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, color, zbuffer):
 #end draw_line
 
 def fill_polygon(p0, p1, p2, screen, color, zbuffer):
-	print "points",p0,p1,p2
 	if(p0[0] == p1[0] == p2[0]) or (p0[1] == p1[1] == p2[1]):
 		return
 
@@ -184,56 +183,43 @@ def fill_polygon(p0, p1, p2, screen, color, zbuffer):
 				 points[ii][1] == points[ii + 1][1]:
 				return
 
-	print "sorted points",points
 	zline = Line(
 				 (points[0][0],points[0][2],points[0][1],),
 				 (points[1][0],points[1][2],points[1][1],),
 				)
-	if zline.xy_slope == 0:
+	if zline.xy_slope == None:
 		return
 
 	if points[0][1] == points[1][1]:
 		if points[0][0] < points[1][0]:
 			start_line = Line(points[2],points[0])
 			end_line   = Line(points[2],points[1])
-			print 1
 		else:
 			start_line = Line(points[2],points[1])
 			end_line   = Line(points[2],points[0])
-			print 2
 	elif points[1][1] == points[2][1]:
 		if points[1][0] < points[2][0]:
 			start_line = Line(points[0],points[1])
 			end_line   = Line(points[0],points[2])
-			print 3
 		else:
 			start_line = Line(points[0],points[2])
 			end_line   = Line(points[0],points[1])
-			print 4
 	elif points[0][0] < points[1][0]:
 		start_line = Line(points[0],points[2])
 		end_line   = Polyline(points)
-		print 5
 	elif points[0][0] > points[1][0]:
 		start_line = Polyline(points)
 		end_line   = Line(points[0],points[2])
-		for line in start_line.lines:
-			print line
-			print "--------"
-		print end_line
-		print 6
 	elif points[1][0] < points[2][0]:
 		start_line = Polyline(points)
 		end_line   = Line(points[0],points[2])
-		print 7
 	else:
 		start_line = Line(points[0],points[2])
 		end_line   = Polyline(points)
-		print 8
 
 	for ycor in xrange(int(points[0][1]),int(points[2][1]),-1):
 		for xcor in xrange( int(start_line.getX(ycor)), int(end_line.getX(ycor))+1 ):
-			plot(screen,color,ycor,xcor,zline.getY(xcor),zbuffer)
+			plot(screen,color,xcor,ycor,zline.getY(xcor),zbuffer)
 
 def fill_polygons(matrix, screen, color, zbuffer):
 	for i in xrange(0,len(matrix),3):

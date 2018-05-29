@@ -3,6 +3,7 @@ import math
 from matrix import *
 from function import *
 from geometry import *
+from engine import *
 
 def link_circle_matrices(polygons,circle,next_circle):
 	"""
@@ -32,9 +33,6 @@ def link_circles(polygons,circle1,circle2,points):
 class Solid(Matrix):
 	def __init__(self,matrix):
 		Matrix.__init__(self,matrix)
-
-	def draw(self,screen):
-		screen.draw_polygons(self)
 
 class Torus(Solid):
 	def __init__(self,x, y, z, radius1, radius2, circles=150,edges=100):
