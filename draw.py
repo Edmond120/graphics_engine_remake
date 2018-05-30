@@ -44,6 +44,14 @@ def _backface_culling(x0,y0,x1,y1,x2,y2):
 		else:
 			return y2 > (slope * x2 + intercept)
 			
+def cull(polygon):
+	x0 = polygon[0][0]
+	x1 = polygon[1][0]
+	x2 = polygon[2][0]
+	y0 = polygon[0][1]
+	y1 = polygon[1][1]
+	y2 = polygon[2][1]
+	return _backface_culling(x0,y0,x1,y1,x2,y2)
 
 def draw_polygons( matrix, screen, color, zbuffer):
 	for i in xrange(0,len(matrix),3):

@@ -34,6 +34,11 @@ class Solid(Matrix):
 	def __init__(self,matrix):
 		Matrix.__init__(self,matrix)
 
+	def polygons(self):
+		"generates a tuple of points for each polygon"
+		for i in xrange(0,len(self.matrix),3):
+			yield (self.matrix[i],self.matrix[i+1],self.matrix[i+2],)
+
 class Torus(Solid):
 	def __init__(self,x, y, z, radius1, radius2, circles=150,edges=100):
 		Solid.__init__(self,_make_torus(x,y,z,radius1,radius2,circles,edges))
